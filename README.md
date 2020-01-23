@@ -54,7 +54,7 @@ Now you will just need to add the rest of the required environment variables to 
 
 ## Setting Environment Variables
 
-The following environment variables exist for this service (the optional ones are noted as such). Note that while a Mailgun API key/account is not required, it's highly reccomended as the approval system works via email.
+The following environment variables exist for this service (the optional ones are noted as such). Note that while a Mailgun API key/account is not required, it's highly recommended as the approval system works via email.
 
 * `DATABASE_NAME`: Postgres database name.
 * `DATABASE_USER`: Postgres database user with permissions to create and use tables.

@@ -1,0 +1,15 @@
+A user has submitted a lambda layer to be added to the Lambda Layers Database. Please review the submission information and approve (or don't) this submission.
+<br />
+<h2>Layer Submission Details</h2>
+<ul>
+	<li><b>ARN</b>: <pre style="display: inline">{{layer_arn}}</pre></li>
+	<li><b>Source URL</b>: <a href="{{source_link}}">{{source_link}}</a></li>
+	<li><b>Submitter Name/Handler</b>: {{submitter_name}}</li>
+	<li><b>Description</b>: {{description}}</li>
+	<li><b>License</b>: {{license}}</li>
+</ul>
+<br />
+To download the Lambda layer .zip file, <a target="_blank" href="{{api_origin}}/api/v1/layers/download/{{layer_arn}}">click here</a>.
+<br />
+<hr />
+To approve this submission, <a target="_blank" href="{{api_origin}}/api/v1/submissions/approve/confirm/{{approval_secret}}">click here</a>. Otherwise feel free to ignore this email.

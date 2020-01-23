@@ -1,0 +1,7 @@
+node_modules/
+lambda-packages/*.zip
+config.env
+env/*
+.DS_Store
+.env
+*.zip

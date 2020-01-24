@@ -5,3 +5,6 @@ env/*
 .DS_Store
 .env
 *.zip
+docker-compose.yml
+sync-config.lua
+.idea

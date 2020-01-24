@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <div class="main mb-5">
         <h3 class="search-title"><font-awesome-icon icon="download" /> Download Layer <code>.zip</code> by ARN</h3>
         <br />
         <p>

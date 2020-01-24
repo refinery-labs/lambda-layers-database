@@ -1,19 +1,37 @@
 <template>
     <div class="main">
-        <h1>Lambda Layers Database</h1>
-        <h2><i>Created and supported by the <a target="_blank" href="https://refinery.io">Refinery.io team</a></i></h2>
+        <h1>Lambda Layer Database</h1>
+        <h2 class="text-muted">
+          <i>Created and supported by the <a target="_blank" href="https://refinery.io">Refinery.io team</a></i>
+        </h2>
         <h3 class="search-title"><font-awesome-icon icon="search" /> Search the Database</h3>
-        <div class="input-group">
-          <b-form-input v-on:keyup="perform_search" v-model="query" class="search-box" size="lg" type="search" placeholder="pandoc, git, ssh, chrome..." autofocus>
+        <b-input-group>
+          <b-form-input v-on:keyup="perform_search" v-model="query" class="search-box"
+                        size="lg" type="search" placeholder="pandoc, git, ssh, chrome..." autofocus>
           </b-form-input>
-          <span class="input-group-btn">
-            <b-form-select v-model="selected_region" :options="supported_regions" size="lg"></b-form-select>
-          </span>
-        </div>
+          <b-input-group-append>
+            <b-dropdown v-bind:text="selected_region" size="lg" variant="dark">
+              <b-dropdown-item v-for="region in supported_regions" v-bind:key="region"
+                               @click="selected_region = region">
+                {{region}}
+              </b-dropdown-item>
+            </b-dropdown>
+          </b-input-group-append>
+        </b-input-group>
         <hr />
         <b-list-group>
-          <b-list-group-item class="d-flex justify-content-between align-items-center" variant="dark" v-if="search_results.length === 0 && search_results_loading === false">
-            <b>No lambda layers found for your search query. <router-link to="/submit">Maybe consider submitting one for the database?</router-link></b>
+          <b-list-group-item class="d-flex justify-content-between align-items-center text-center" variant="dark" v-if="search_results.length === 0 && search_results_loading === false">
+            <div class="w-100">
+              <span>
+                No lambda layers found for your search query.
+              </span>
+              <br>
+              <span>
+                <router-link to="/submit">
+                  Maybe consider submitting one for the database?
+                </router-link>
+              </span>
+            </div>
           </b-list-group-item>
 
           <b-list-group-item v-if="search_results_loading">

@@ -339,7 +339,7 @@ router.get('/api/v1/layers/:layer_id', async (ctx, next) => {
 
 (async () => {
 	await database.database_init();
-	console.log(`[STATUS] Lambda layers database API has started on 0.0.0.0:${SERVER_PORT}...`);
+	console.log(`[STATUS] Lambda layer database API has started on 0.0.0.0:${SERVER_PORT}...`);
 	app.listen(SERVER_PORT);
 })();
 

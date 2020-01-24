@@ -131,7 +131,7 @@ async function importLayerARN(layer_arn) {
 			s3ZipObjectName,
 			newLambdaLayerName,
 			[],
-			`Layer mirrored from layer ARN ${layer_arn} using the Lambda Layers Database by Refinery.io`,
+			`Layer mirrored from layer ARN ${layer_arn} using the Lambda Layer Database by Refinery.io`,
 			lambdaMetadata['LicenseInfo']
 		);
 	});

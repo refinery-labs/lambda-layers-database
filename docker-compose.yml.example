@@ -10,12 +10,17 @@ services:
       DATABASE_USER: lambda-layers-database
       DATABASE_PASSWORD: lambda-layers-database
       DATABASE_HOST: postgresdb
+      API_ORIGIN: http://localhost:8008
       WEB_ORIGIN: http://localhost:8007
       ADMIN_EMAIL_ADDRESS: REPLACE_ME_WITH_YOUR_EMAIL
       LAMBDA_LAYERS_S3_PREFIX: GENERATE_THIS_WITH_CREATE_BUCKETS_SCRIPT_AND_REPLACE
       # These are optional values, but are recommended
       # MAILGUN_API_KEY: API_KEY_HERE
       # MAILGUN_DOMAIN: YOUR_DOMAIN_HERE
+      # These keys need to have access to your AWS account and should be able
+      # to write to S3, Lambda, etc in all regions.
+      AWS_ACCESS_KEY_ID: REPLACE_WITH_AWS_ACCOUNT_KEY_ID
+      AWS_SECRET_ACCESS_KEY: REPLACE_WITH_AWS_SECRET_ACCESS_KEY
     ports:
       - "8008:7777"
     volumes:

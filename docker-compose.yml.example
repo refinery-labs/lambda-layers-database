@@ -1,0 +1,40 @@
+version: "3"
+services:
+  back-end:
+    build: ./back-end
+    depends_on:
+      - postgresdb
+    environment:
+      PORT: 7777
+      DATABASE_NAME: lambda-layers-database
+      DATABASE_USER: lambda-layers-database
+      DATABASE_PASSWORD: lambda-layers-database
+      DATABASE_HOST: postgresdb
+      WEB_ORIGIN: http://localhost:8007
+      ADMIN_EMAIL_ADDRESS: REPLACE_ME_WITH_YOUR_EMAIL
+      LAMBDA_LAYERS_S3_PREFIX: GENERATE_THIS_WITH_CREATE_BUCKETS_SCRIPT_AND_REPLACE
+      # These are optional values, but are recommended
+      # MAILGUN_API_KEY: API_KEY_HERE
+      # MAILGUN_DOMAIN: YOUR_DOMAIN_HERE
+    ports:
+      - "8008:7777"
+    volumes:
+      # Mounting these as volumes allows live reloading
+      - /REPLACE_WITH_PATH_OF_REPO_ON_YOUR_SYSTEM/back-end/:/work/
+  front-end:
+    build: ./front-end
+    environment:
+      WEB_ORIGIN: "http://localhost:8008"
+    ports:
+      - "8007:8080"
+    volumes:
+      # Mounting these as volumes allows live reloading
+      - /REPLACE_WITH_PATH_OF_REPO_ON_YOUR_SYSTEM/front-end/:/work/
+  postgresdb:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: lambda-layers-database
+      POSTGRES_USER: lambda-layers-database
+      POSTGRES_DB: lambda-layers-database
+    ports:
+      - "5432:5432"

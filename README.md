@@ -1,4 +1,4 @@
-# The Lambda Layers Database
+# The Lambda Layer Database
 ## By the [refinery.io](https://refinery.io) Team
 
 # Summary

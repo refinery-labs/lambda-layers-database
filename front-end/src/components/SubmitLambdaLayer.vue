@@ -1,10 +1,18 @@
 <template>
-    <div class="hello">
+    <div class="hello mb-5">
         <h1>Submit a New Lambda Layer for the Database</h1>
         <div class="main">
-            <b-alert show><font-awesome-icon icon="info-circle" /> <b>Important: </b>Make sure the Lambda layer is able to be mounted from any AWS account so that it can be imported. An example AWS CLI command to do this is the following:
-              <br />
-              <code>aws lambda add-layer-version-permission --layer-name LAYER_NAME --version-number LAYER_VERSION --statement-id public --action lambda:GetLayerVersion --principal "*" --region us-west-2</code>
+            <b-alert show variant="info">
+              <font-awesome-icon icon="info-circle" /> <b>Important!</b>
+              <p class="mb-1">
+              Confirm that the layer can be imported to other AWS accounts. Layers are private by default.
+              </p>
+              <span class="mb-0 pb-0">Layers may be made public via the following command:</span>
+                <span class="bg-dark p-1 d-block rounded">
+                <code class="text-light font-weight-normal">
+                  aws lambda add-layer-version-permission --layer-name LAYER_NAME --version-number LAYER_VERSION --statement-id public --action lambda:GetLayerVersion --principal "*" --region us-west-2
+                </code>
+              </span>
             </b-alert>
             <b-form>
                 <b-form-group label="Lambda ARN" description="The ARN of the Lambda layer you'd like added to the database.">

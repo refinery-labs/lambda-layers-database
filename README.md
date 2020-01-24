@@ -54,7 +54,7 @@ Now you will just need to add the rest of the required environment variables to 
 
 ## Setting Environment Variables
 
-The following environment variables exist for this service (the optional ones are noted as such). Note that while a Mailgun API key/account is not required, it's highly reccomended as the approval system works via email.
+The following environment variables exist for this service (the optional ones are noted as such). Note that while a Mailgun API key/account is not required, it's highly reccomended as the approval system works via email. You can see a template of these environment variables in the `docker-compose.yml.example` file.
 
 * `DATABASE_NAME`: Postgres database name.
 * `DATABASE_USER`: Postgres database user with permissions to create and use tables.
@@ -63,7 +63,10 @@ The following environment variables exist for this service (the optional ones ar
 * *Optional* `MAILGUN_API_KEY`: [Mailgun](https://www.mailgun.com/) API key for sending user submission approval emails.
 * *Optional* `MAILGUN_DOMAIN`: Your Mailgun sending domain name.
 * `WEB_ORIGIN`: The web origin of the API server, this is used for CORS headers and generating approval links. Should be in the format like `{{HTTP|HTTPS}}://hostname.suffix`, for example `http://localhost:7777` or `https://production.example.com`.
+* `API_ORIGIN`: The origin of the API server, this is used for the approval email links.
 * `ADMIN_EMAIL_ADDRESS`: The email address to send approval emails to.
+* `AWS_ACCESS_KEY_ID`: The AWS access key for the AWS account you want to use to host the layers.
+* `AWS_SECRET_ACCESS_KEY`: The AWS secret key for the AWS account you want to use to host the layers.
 
 # Approval Process
 

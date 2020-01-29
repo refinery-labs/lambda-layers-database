@@ -22,7 +22,7 @@
             </b-input-group-append>
           </b-input-group>
           <small class="form-text text-muted">
-            Searches for a layer by name. To get the correct ARN to use, please specify your region. All layers are available in every region.
+            Searches layers by name. To get the correct ARN to use, please specify your region. Every layer is available in every region.
           </small>
         </div>
         <hr />

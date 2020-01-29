@@ -203,27 +203,27 @@ router.post('/api/v1/layers/submit', async (ctx, next) => {
 		console.log('Inserting layer submission into database for approval...');
 		await database.LayerSubmission.create(submissionData);
 	} catch ( e ) {
-		if (e.name == 'SequelizeUniqueConstraintError') {
+		if (e.name === 'SequelizeUniqueConstraintError') {
 			console.log('Cannot insert layer submission into database, layer ARN already exists!');
 			ctx.body = {
-				'success': false,
-				'msg': 'That Lambda layer has already been submitted for approval.'
-			}
+				success: false,
+				msg: 'That Lambda layer has already been submitted for approval.'
+			};
 			return
 		}
 		throw e;
 	}
 
 	// If Mailgun is enabled, send email about it.
-	if(emailer.mailgun) {
+	if (emailer.mailgun) {
 		await emailer.sendSubmissionApprovalLink(
 			submissionData
 		);
 	}
 
 	ctx.body = {
-		'success': true,
-		'msg': 'Thank you for your submission, it will be reviewed and if approved imported into the database.'
+		success: true,
+		msg: 'Thank you for your submission, it will be reviewed and if approved imported into the database.'
 	}
 });
 

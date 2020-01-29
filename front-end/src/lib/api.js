@@ -1,79 +1,99 @@
+import {convertLayerToLocal} from './utils';
+
 const API_SERVER = process.env.WEB_ORIGIN;
 
-async function makeAPIRequest(method, endpoint, body) {
-	const noBodyMethods = [ 'GET', 'HEAD', 'OPTIONS' ];
-	if(noBodyMethods.includes( method.toUpperCase() )) {
-		const response = await fetch(`${API_SERVER}${endpoint}`, {
-			method: method
-		})
-		return response.json();
-	}
+export async function makeAPIRequest(method, endpoint, body) {
+  const noBodyMethods = [ 'GET', 'HEAD', 'OPTIONS' ];
 
+  if (noBodyMethods.includes( method.toUpperCase() )) {
     const response = await fetch(`${API_SERVER}${endpoint}`, {
-        method: method,
-        headers: new Headers({
-            'content-type': 'application/json'
-        }),
-        body: JSON.stringify(body)
-    })
+      method: method
+    });
     return response.json();
+  }
+
+  const response = await fetch(`${API_SERVER}${endpoint}`, {
+    method: method,
+    headers: new Headers({
+      'content-type': 'application/json'
+    }),
+    body: JSON.stringify(body)
+  });
+
+  return response.json();
 }
 
-async function isValidAndExistingLayer(layer_arn) {
+export async function isValidAndExistingLayer(layerArn) {
+  try {
     const result = await makeAPIRequest(
-		'POST',
-		'/api/v1/layers/check',
-		{
-			'layer_arn': layer_arn
-		}
+      'POST',
+      '/api/v1/layers/check',
+      {
+        layer_arn: layerArn
+      }
     );
 
     return result.exists;
+  } catch (e) {
+    throw new Error('Unable to validate layer')
+  }
 }
 
-async function submitLayerSubmission(submission_data) {
-    return makeAPIRequest(
-		'POST',
-		'/api/v1/layers/submit',
-		submission_data
-    );
+export async function submitLayerSubmission(submission_data) {
+  return makeAPIRequest(
+    'POST',
+    '/api/v1/layers/submit',
+    submission_data
+  );
 }
 
-async function downloadLayer(layer_arn) {
-	window.location = `${API_SERVER}/api/v1/layers/download/${layer_arn}`;
+export async function downloadLayer(layerArn) {
+  window.location = `${API_SERVER}/api/v1/layers/download/${layerArn}`;
 }
 
-async function searchDatabase(query) {
-    return makeAPIRequest(
-		'POST',
-		'/api/v1/layers/search',
-		{
-			'query': query
-		}
-    );
+export async function searchDatabase(query) {
+  const response = await makeAPIRequest(
+    'POST',
+    '/api/v1/layers/search',
+    {
+      'query': query
+    }
+  );
+
+  if (!response) {
+    throw new Error('Invalid search response');
+  }
+
+  if (!response.success) {
+    throw new Error('Search failure');
+  }
+
+  return response.search_results.map(convertLayerToLocal);
 }
 
-async function getSupportedRegions() {
+export async function getSupportedRegions() {
+  try {
     const response = await makeAPIRequest(
-		'GET',
-		'/api/v1/layers/supported_regions',
-		{}
+      'GET',
+      '/api/v1/layers/supported_regions',
+      {}
     );
     return response.supported_regions;
+  } catch (e) {
+    throw new Error('Unable to retrieve regions');
+  }
 }
 
-async function getLambdaLayerInfo(layer_id) {
+export async function getLambdaLayerInfo(layerId) {
+  try {
     const response = await makeAPIRequest(
-		'GET',
-		'/api/v1/layers/' + layer_id,
-		{}
+      'GET',
+      '/api/v1/layers/' + layerId,
+      {}
     );
-    return response.layer_info;
-}
 
-exports.isValidAndExistingLayer = isValidAndExistingLayer;
-exports.downloadLayer = downloadLayer;
-exports.submitLayerSubmission = submitLayerSubmission;
-exports.searchDatabase = searchDatabase;
-exports.getSupportedRegions = getSupportedRegions;
-exports.getLambdaLayerInfo = getLambdaLayerInfo;
+    return convertLayerToLocal(response.layer_info);
+  } catch (e) {
+    throw new Error('Unable to retrieve layer info');
+  }
+}

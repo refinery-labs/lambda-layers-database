@@ -2,14 +2,15 @@
     <div class="row justify-content-center">
       <div class="col-10">
         <h1>Lambda Layer Database</h1>
-        <h2 class="text-muted">
+        <h2 class="text-muted mb-3">
           <i>Created and supported by the <a target="_blank" href="https://refinery.io">Refinery.io team</a></i>
         </h2>
-        <div class="w-100">
-          <h3 class="search-title"><font-awesome-icon icon="search" /> Search the Database</h3>
+        <hr/>
+        <div class="mt-4 mb-3 w-100 text-justify">
+          <h3 class="search-title mt-3 pb-2"><font-awesome-icon icon="search" /> Search the Database</h3>
           <b-input-group>
-            <b-form-input v-on:keyup="performSearch" v-model="query" class="search-box"
-                          size="lg" type="search" placeholder="pandoc, git, ssh, chrome..." autofocus>
+            <b-form-input v-on:keyup="performSearch" v-model="query" class="search-box" autofocus
+                          size="lg" type="search" placeholder="pandoc, git, ssh, chrome...">
             </b-form-input>
             <b-input-group-append>
               <b-dropdown v-bind:text="selectedRegion" size="lg" variant="dark">
@@ -20,8 +21,19 @@
               </b-dropdown>
             </b-input-group-append>
           </b-input-group>
+          <small class="form-text text-muted">
+            Searches for a layer by name. To get the correct ARN to use, please specify your region. All layers are available in every region.
+          </small>
         </div>
         <hr />
+        <div class="mt-4 mb-2 pb-0 text-justify" v-if="searchResults && searchResults.length > 0">
+          <h5 v-if="query === ''">
+            Available Layers:
+          </h5>
+          <h5 v-if="query !== ''">
+            Found {{searchResults.length}} Matching Layer{{searchResults.length > 1 ? 's' : ''}}:
+          </h5>
+        </div>
         <b-list-group>
           <b-list-group-item class="d-flex justify-content-between align-items-center text-center" variant="light"
                              v-if="searchResults.length === 0 && searchResultsLoading === false">
@@ -172,10 +184,6 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.search-title {
-    padding-bottom: 10px;
-}
-
 h3 {
     margin: 40px 0 0;
 }

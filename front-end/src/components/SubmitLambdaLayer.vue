@@ -1,17 +1,15 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-lg-9">
+    <div class="col-lg-8">
       <h1>Submit New Lambda Layer</h1>
       <hr/>
-      <div class="col-md-10 ml-auto mr-auto">
+      <div class="ml-2 mr-2">
         <p class="text-justify">
           This form allows you to request a new layer to be added to the list of entries. Upon submission, your layer will be submitted for review by our team. Once approved, it will be available for general use.
         </p>
       </div>
       <hr/>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-10">
+          <div class="col-lg-10 ml-auto mr-auto">
             <div class="submit-lambda-layer text-justify">
               <b-alert show variant="info">
                 <font-awesome-icon icon="info-circle" /> <b>Important!</b>
@@ -69,8 +67,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>

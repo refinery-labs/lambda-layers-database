@@ -19,6 +19,22 @@
           </b-input-group-append>
         </b-input-group>
         <hr />
+
+        <!-- TODO refactor into component -->
+        <b-button-group style="width: 100%">
+          <b-button size="lg" v-if="search_offset > 0" v-on:click="previous_page">
+            <font-awesome-icon icon="chevron-circle-left" /> Previous Page
+          </b-button>
+
+          <!-- TODO implement page numbers -->
+          <b-button v-for="search_result_page in search_result_pages" v-bind:key="search_result_page">
+            {{search_result_page}}
+          </b-button>
+
+          <b-button size="lg" v-if="(search_total_results / 5) > search_offset && search_total_results > 5" v-on:click="next_page">
+            Next Page <font-awesome-icon icon="chevron-circle-right" />
+          </b-button>
+        </b-button-group>
         <b-list-group>
           <b-list-group-item class="d-flex justify-content-between align-items-center text-center" variant="dark" v-if="search_results.length === 0 && search_results_loading === false">
             <div class="w-100">
@@ -76,6 +92,22 @@
             </div>
           </b-list-group-item>
         </b-list-group>
+
+        <!-- TODO refactor into component -->
+        <b-button-group style="width: 100%">
+          <b-button size="lg" v-if="search_offset > 0" v-on:click="previous_page">
+            <font-awesome-icon icon="chevron-circle-left" /> Previous Page
+          </b-button>
+
+          <!-- TODO implement page numbers -->
+          <b-button v-for="search_result_page in search_result_pages" v-bind:key="search_result_page">
+            {{search_result_page}}
+          </b-button>
+
+          <b-button size="lg" v-if="(search_total_results / 5) > search_offset && search_total_results > 5" v-on:click="next_page">
+            <font-awesome-icon icon="chevron-circle-right" /> Next Page
+          </b-button>
+        </b-button-group>
     </div>
 </template>
 
@@ -93,10 +125,16 @@ export default {
         internal_search_results: [],
         search_results_loading: false,
         supported_regions: [],
-        selected_region: 'us-west-2'
+        selected_region: 'us-west-2',
+        search_offset: 0,
+        search_total_results: 0,
       }
     },
     computed: {
+      search_result_pages: function() {
+        // TODO implement pages
+        return [];
+      },
       select_formatted_supported_regions: function() {
         return this.supported_regions.map(region => {
           return {
@@ -127,20 +165,35 @@ export default {
       get_supported_regions: async function() {
         this.supported_regions = await apiService.getSupportedRegions();
       },
-      perform_search: async function() {
+      previous_page: async function() {
+        this.search_offset = this.search_offset - 5;
+        await this.search();
+      },
+      next_page: async function() {
+        this.search_offset = this.search_offset + 5;
+        await this.search();
+      },
+      search: async function() {
         this.internal_search_results = [];
         this.search_results_loading = true;
         const result = await apiService.searchDatabase(
-          this.query
+          this.query,
+          this.search_offset
         );
         this.search_results_loading = false;
 
         if(!result.success) {
           this.$toastr.e("An error occurred while performing this search.");
-          return
+          return false;
         }
 
         this.internal_search_results = result.search_results;
+        this.search_total_results = result.total_results;
+      },
+      perform_search: async function() {
+        this.search_total_results = 0;
+        this.search_offset = 0;
+        await this.search();
       },
       download_layer_zip: async function(layer_arn) {
         await apiService.downloadLayer(

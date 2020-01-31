@@ -232,10 +232,18 @@ const searchLambdaLayersSchema = {
 	"properties": {
 		"query": {
 			"type": "string"
-		}
+		},
+		"offset": {
+			"type": "number"
+		},
+		"limit": {
+			"type": "number"
+		},
 	},
 	"required": [
-		"query"
+		"query",
+		"offset",
+		"limit"
 	]
 }
 router.post('/api/v1/layers/search', async (ctx, next) => {
@@ -243,7 +251,7 @@ router.post('/api/v1/layers/search', async (ctx, next) => {
 		ctx.throw(401, 'Request body invalid, please use the correct format.');
 	}
 
-	const searchResults = await database.LambdaLayer.findAll({
+	const queryResults = await database.LambdaLayer.findAndCountAll({
 		where: {
 			[Op.or]: [
 				{
@@ -268,17 +276,22 @@ router.post('/api/v1/layers/search', async (ctx, next) => {
 				},
 			]
 		},
+		order: [
+			['updatedAt', 'DESC']
+		],
+		offset: ctx.request.body.offset,
 		limit: 5
 	});
 
-	const enrichedSearchResults = copy(searchResults).map(searchResult => {
+	const enrichedSearchResults = copy(queryResults.rows).map(searchResult => {
 		searchResult.layers = lambdaLayerDownloader.getLayersForAllSupportedRegions(searchResult.layer_arn);
 		return searchResult;
 	});
 
 	ctx.body = {
 		'success': true,
-		'search_results': enrichedSearchResults
+		'search_results': enrichedSearchResults,
+		'total_results': queryResults.count
 	}
 });
 

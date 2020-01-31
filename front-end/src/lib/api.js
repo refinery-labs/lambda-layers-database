@@ -43,12 +43,14 @@ async function downloadLayer(layer_arn) {
 	window.location = `${API_SERVER}/api/v1/layers/download/${layer_arn}`;
 }
 
-async function searchDatabase(query) {
+async function searchDatabase(query, offset) {
     return makeAPIRequest(
 		'POST',
 		'/api/v1/layers/search',
 		{
-			'query': query
+			'query': query,
+			'limit': 5,
+			'offset': offset
 		}
     );
 }

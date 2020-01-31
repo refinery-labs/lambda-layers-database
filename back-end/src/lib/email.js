@@ -2,7 +2,7 @@ const {promisify} = require('util');
 const Mustache = require('mustache');
 const fs = require('fs');
 
-const approvalEmailTemplate = fs.readFileSync("./email-templates/submission-approval-email.html").toString();
+const approvalEmailTemplate = fs.readFileSync("./src/email-templates/submission-approval-email.html").toString();
 
 function getMailgunValue() {
 	if(process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN && process.env.ADMIN_EMAIL_ADDRESS) {

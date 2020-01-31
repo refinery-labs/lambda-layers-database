@@ -1,18 +1,31 @@
+import fetch from 'node-fetch';
+// Required for fetch to work on the server...
+global.Headers = fetch.Headers;
+
 import {convertLayerToLocal} from './utils';
 
-const API_SERVER = process.env.WEB_ORIGIN;
+function getApiServerUrl() {
+  // Check if we're on the server
+  if (typeof window === 'undefined') {
+    return process.env.VUE_APP_SSR_API_HOST;
+  }
+
+  return process.env.WEB_ORIGIN;
+}
 
 export async function makeAPIRequest(method, endpoint, body) {
   const noBodyMethods = [ 'GET', 'HEAD', 'OPTIONS' ];
 
+  const apiServer = getApiServerUrl();
+
   if (noBodyMethods.includes( method.toUpperCase() )) {
-    const response = await fetch(`${API_SERVER}${endpoint}`, {
+    const response = await fetch(`${apiServer}${endpoint}`, {
       method: method
     });
     return response.json();
   }
 
-  const response = await fetch(`${API_SERVER}${endpoint}`, {
+  const response = await fetch(`${apiServer}${endpoint}`, {
     method: method,
     headers: new Headers({
       'content-type': 'application/json'

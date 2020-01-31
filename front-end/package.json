@@ -6,9 +6,15 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "vue-cli-service build && vue-cli-service s3-deploy"
+    "deploy": "vue-cli-service build && vue-cli-service s3-deploy",
+    "ssr:build": "vue-cli-service ssr:build",
+    "ssr:serve": "vue-cli-service ssr:serve",
+    "ssr:start": "cross-env NODE_ENV=production vue-cli-service ssr:serve --mode production",
+    "strip-copy-on-start": "echo 'stripping \"copy on start\" in SSR lib'; sed -i 's/copyUrlOnStart: true/copyUrlOnStart: false/' node_modules/@akryum/vue-cli-plugin-ssr/lib/config.js",
+    "strip-localhost": "echo 'striping localhost bug'; sed -i 's/localhost:/0.0.0.0:/' node_modules/@akryum/vue-cli-plugin-ssr/lib/dev-server.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.0",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-brands-svg-icons": "^5.12.0",
@@ -17,17 +23,21 @@
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.2.1",
     "core-js": "^3.4.4",
+    "node-fetch": "^2.6.0",
     "sass": "^1.25.0",
     "sass-loader": "^8.0.2",
     "vue": "^2.6.11",
     "vue-cli-plugin-s3-deploy": "^3.0.0",
     "vue-clipboard2": "^0.3.1",
     "vue-router": "^3.1.4",
+    "vue-server-renderer": "^2.6.0",
     "vue-toastr": "^2.1.2"
   },
   "devDependencies": {
+    "@akryum/vue-cli-plugin-ssr": "^0.6.0",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
+    "@vue/cli-plugin-router": "^4.1.2",
     "@vue/cli-service": "^4.1.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",

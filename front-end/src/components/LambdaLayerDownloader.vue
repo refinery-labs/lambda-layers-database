@@ -2,8 +2,8 @@
   <div class="row justify-content-center">
     <div class="col-lg-9">
       <div class="lambda-layer-downloader">
-        <h3 class="search-title"><font-awesome-icon icon="download" /> Download Layer <code>.zip</code> by ARN</h3>
-        <br />
+        <h3 class="search-title"><i class="fas fa-download"></i> Download Layer <code>.zip</code> by ARN</h3>
+        <br>
         <p>
           <b-form-group description="The ARN of the Lambda layer you'd like to download.">
             <b-form-input @change="validateLayer" v-model="layerArn" :state="validLayer" class="search-box" size="lg" type="text" placeholder="arn:aws:lambda:us-west-2:000000000000:layer:example-layer:1" autofocus></b-form-input>
@@ -12,7 +12,7 @@
             </b-form-invalid-feedback>
           </b-form-group>
           <b-button variant="primary" size="lg" v-on:click="downloadSuppliedLayer">
-            <font-awesome-icon icon="download" /> Download Lambda Layer
+            <i class="fas fa-download"></i> Download Lambda Layer
           </b-button>
         </p>
       </div>
@@ -40,7 +40,7 @@ export default {
     },
     async downloadSuppliedLayer() {
       if (this.layerArn.trim() === '') {
-        this.$toastr.e('Please provide a layer ARN to download.');
+        this.$toastr && this.$toastr.e('Please provide a layer ARN to download.');
         return
       }
 
@@ -49,7 +49,7 @@ export default {
       );
 
       if (!layerExists) {
-        this.$toastr.e('Could not download layer. Make sure it exists and has the proper permissions set on it.');
+        this.$toastr && this.$toastr.e('Could not download layer. Make sure it exists and has the proper permissions set on it.');
         return
       }
 
@@ -57,7 +57,7 @@ export default {
         this.layerArn
       );
 
-      this.$toastr.s('Lambda layer .zip was downloaded successfully!');
+      this.$toastr && this.$toastr.s('Lambda layer .zip was downloaded successfully!');
 
       this.layerArn = '';
       this.validLayer = null;

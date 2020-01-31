@@ -46,7 +46,7 @@
             <b-form-input v-bind:value="layer.layerArn" size="md" readonly></b-form-input>
             <b-input-group-append>
               <b-button variant="primary" size="sm" v-on:click="copyLayerArn(layer.layerArn)">
-                <font-awesome-icon icon="copy" />
+                <i class="fas fa-copy"></i>
                 Copy ARN
               </b-button>
             </b-input-group-append>
@@ -56,13 +56,13 @@
           </b-input-group>
           <b-button-group class="pt-2 pb-1 w-100">
             <b-button size="sm" variant="outline-dark" v-on:click="downloadLayerZip(layer.layerArn)">
-              <font-awesome-icon icon="download" /> Download Layer .zip
+              <i class="fas fa-download"></i> Download Layer .zip
             </b-button>
           </b-button-group>
 
           <hr />
           <b-button size="sm" class="w-100" to="/" variant="primary">
-            <font-awesome-icon icon="home" /> Back to Lambda Layer Search
+            <i class="fas fa-home"></i> Back to Lambda Layer Search
           </b-button>
         </div>
       </div>
@@ -114,7 +114,7 @@ export default {
   methods: {
     copyLayerArn(layerArn) {
       this.$copyText(layerArn);
-      this.$toastr.s("Lambda layer ARN copied to clipboard!");
+      this.$toastr && this.$toastr.s('Lambda layer ARN copied to clipboard!');
     },
     async downloadLayerZip(layerArn) {
       await apiService.downloadLayer(
@@ -134,6 +134,9 @@ export default {
   },
   async mounted() {
     this.getLayerContents();
+  },
+  async serverPrefetch() {
+    await this.getLayerContents();
   }
 }
 </script>

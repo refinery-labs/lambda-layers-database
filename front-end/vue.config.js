@@ -30,6 +30,10 @@ module.exports = {
       acl: 'public-read',
       enableCloudfront: false,
       pluginVersion: '3.0.0'
+    },
+    ssr: {
+      host: '0.0.0.0',
+      copyUrlOnStart: false
     }
   }
-}
+};

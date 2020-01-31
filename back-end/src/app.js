@@ -16,11 +16,29 @@ const app = new Koa();
 const router = new Router();
 app.use(bodyParser());
 
+function isLocalDev() {
+	return process.env.WEB_ORIGIN.includes('http://localhost:');
+}
+
 /*
 	Middleware to set default security headers
 */
 app.use(async (ctx, next) => {
-	ctx.set('Access-Control-Allow-Origin', process.env.WEB_ORIGIN);
+	// For some reason 'ctx.origin' is actually showing us the Host header?
+	const requestOrigin = ctx.headers['origin'];
+
+  const allowedOrigins = [process.env.WEB_ORIGIN];
+
+  // If we are locally developing, then allow these domains as well.
+  if (isLocalDev()) {
+		allowedOrigins.push('http://localhost:8011');
+		allowedOrigins.push('http://localhost:8008');
+	}
+
+	if (allowedOrigins.includes(requestOrigin)) {
+		ctx.set('Access-Control-Allow-Origin', requestOrigin);
+	}
+
 	ctx.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 	ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
 	ctx.set('Content-Security-Policy', 'default-src \'none\'');

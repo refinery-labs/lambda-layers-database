@@ -2,17 +2,17 @@
   <div class="row justify-content-center">
     <div class="col-lg-8">
       <h1>Submit New Lambda Layer</h1>
-      <hr/>
+      <hr>
       <div class="ml-2 mr-2">
         <p class="text-justify">
           This form allows you to request a new layer to be added to the list of entries. Upon submission, your layer will be submitted for review by our team. Once approved, it will be available for general use.
         </p>
       </div>
-      <hr/>
+      <hr>
           <div class="col-lg-10 ml-auto mr-auto">
             <div class="submit-lambda-layer text-justify">
               <b-alert show variant="info">
-                <font-awesome-icon icon="info-circle" /> <b>Important!</b>
+                <i class="fas fa-info-circle"></i> <b>Important!</b>
                 <p class="mb-2">
                   Confirm that the layer can be imported to other AWS accounts. By default all Lambda layers are private.
                 </p>
@@ -57,7 +57,7 @@
                 </b-form-group>
                 <span id="disabled-wrapper" class="w-100" tabindex="0">
                   <b-button class="w-100" v-on:click="submitLayer" v-bind:disabled="!isFormValid" variant="primary" size="lg">
-                    <font-awesome-icon icon="paper-plane" /> Submit Lambda Layer for Review
+                    <i class="fas fa-paper-plane"></i> Submit Lambda Layer for Review
                   </b-button>
                 </span>
                 <b-tooltip placement="bottom" target="disabled-wrapper" v-if="!isFormValid">

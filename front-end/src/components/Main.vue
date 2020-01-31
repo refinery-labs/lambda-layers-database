@@ -7,7 +7,9 @@
         </h2>
         <hr/>
         <div class="mt-4 mb-3 w-100 text-justify">
-          <h3 class="search-title mt-3 pb-2"><font-awesome-icon icon="search" /> Search the Database</h3>
+          <h3 class="search-title mt-3 pb-2">
+            <i class="fas fa-search"></i> Search the Database
+          </h3>
           <b-input-group>
             <b-form-input v-on:keyup="performSearch" v-model="query" class="search-box" autofocus
                           size="lg" type="search" placeholder="pandoc, git, ssh, chrome...">
@@ -82,7 +84,7 @@
               <b-form-input v-bind:value="searchResult.layerArn" size="md" readonly></b-form-input>
               <b-input-group-append>
                 <b-button variant="primary" size="sm" v-on:click="copyLayerArn(searchResult.layerArn)">
-                  <font-awesome-icon icon="copy" />
+                  <i class="fas fa-copy"></i>
                   Copy ARN
                 </b-button>
               </b-input-group-append>
@@ -90,11 +92,11 @@
             </b-input-group>
             <b-button-group class="pt-2 pb-1 w-100">
               <b-button size="sm" variant="outline-dark" v-on:click="downloadLayerZip(searchResult.layerArn)">
-                <font-awesome-icon icon="download" /> Download Layer .zip
+                <i class="fas fa-download"></i> Download Layer .zip
               </b-button>
 
               <b-button size="sm" variant="outline-primary" v-bind:to="'/layer/' + searchResult.id">
-                <font-awesome-icon icon="eye" /> View Layer Page
+                <i class="fas fa-eye"></i> View Layer Page
               </b-button>
             </b-button-group>
           </b-list-group-item>
@@ -143,7 +145,7 @@ export default {
   methods: {
     copyLayerArn(layerArn) {
       this.$copyText(layerArn);
-      this.$toastr.s('Lambda layer ARN copied to clipboard!');
+      this.$toastr && this.$toastr.s('Lambda layer ARN copied to clipboard!');
     },
     async getRegionData() {
       this.supportedRegions = await apiService.getSupportedRegions();
@@ -165,7 +167,7 @@ export default {
           this.internalSearchResults = results
         }
       } catch (e) {
-        this.$toastr.e('An error occurred while performing this search.');
+        this.$toastr && this.$toastr.e('An error occurred while performing this search.');
       } finally {
         this.searchResultsLoading = false;
       }
@@ -176,9 +178,13 @@ export default {
       );
     },
   },
-  beforeMount() {
+  mounted() {
     this.performSearch();
     this.getRegionData();
+  },
+  async serverPrefetch() {
+    await this.performSearch();
+    await this.getRegionData();
   }
 }
 </script>

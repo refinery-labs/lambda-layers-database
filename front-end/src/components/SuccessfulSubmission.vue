@@ -4,13 +4,15 @@
     <div class="col-lg-8">
       <div class="successful-submission text-justify">
         <b-alert variant="success" show>
-          <h1><font-awesome-icon icon="check-circle" /> Submission received successfully.</h1>
+          <h1><i class="fas fa-check-circle"></i> Submission received successfully.</h1>
           <p>
             Thanks for your submission, we will review it shortly.
           </p>
         </b-alert>
         <hr />
-        <b-button class="w-100" to="/" variant="primary"><font-awesome-icon icon="home" /> Back to Homepage</b-button>
+        <b-button class="w-100" to="/" variant="primary">
+          <i class="fas fa-home"></i> Back to Homepage
+        </b-button>
       </div>
     </div>
   </div>

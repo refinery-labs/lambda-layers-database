@@ -21,7 +21,7 @@
         <hr />
 
         <!-- TODO refactor into component -->
-        <b-button-group style="width: 100%">
+        <b-button-group class="w-100">
           <b-button size="lg" v-if="search_offset > 0" v-on:click="previous_page">
             <font-awesome-icon icon="chevron-circle-left" /> Previous Page
           </b-button>
@@ -94,7 +94,7 @@
         </b-list-group>
 
         <!-- TODO refactor into component -->
-        <b-button-group style="width: 100%">
+        <b-button-group class="w-100">
           <b-button size="lg" v-if="search_offset > 0" v-on:click="previous_page">
             <font-awesome-icon icon="chevron-circle-left" /> Previous Page
           </b-button>

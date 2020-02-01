@@ -39,16 +39,16 @@
 
         <!-- TODO refactor into component -->
         <b-button-group class="w-100">
-          <b-button size="lg" v-if="search_offset > 0" v-on:click="previous_page">
+          <b-button size="lg" v-if="searchOffset > 0" v-on:click="previousPage">
             <i class="fas fa-chevron-circle-left"></i> Previous Page
           </b-button>
 
           <!-- TODO implement page numbers -->
-          <b-button v-for="search_result_page in search_result_pages" v-bind:key="search_result_page">
-            {{search_result_page}}
+          <b-button v-for="searchResultPage in searchResultPages" v-bind:key="searchResultPage">
+            {{searchResultPage}}
           </b-button>
 
-          <b-button size="lg" v-if="(search_total_results / 5) > search_offset && search_total_results > 5" v-on:click="next_page">
+          <b-button size="lg" v-if="(searchTotalResults / 5) > searchOffset && searchTotalResults > 5" v-on:click="nextPage">
             <i class="fas fa-chevron-circle-right"></i> Next Page
           </b-button>
         </b-button-group>
@@ -120,16 +120,16 @@
 
         <!-- TODO refactor into component -->
         <b-button-group class="w-100">
-          <b-button size="lg" v-if="search_offset > 0" v-on:click="previous_page">
+          <b-button size="lg" v-if="searchOffset > 0" v-on:click="previousPage">
             <i class="fas fa-chevron-circle-left"></i> Previous Page
           </b-button>
 
           <!-- TODO implement page numbers -->
-          <b-button v-for="search_result_page in search_result_pages" v-bind:key="search_result_page">
-            {{search_result_page}}
+          <b-button v-for="searchResultPage in searchResultPages" v-bind:key="searchResultPage">
+            {{searchResultPage}}
           </b-button>
 
-          <b-button size="lg" v-if="(search_total_results / 5) > search_offset && search_total_results > 5" v-on:click="next_page">
+          <b-button size="lg" v-if="(searchTotalResults / 5) > searchOffset && searchTotalResults > 5" v-on:click="nextPage">
             <i class="fas fa-chevron-circle-right"></i> Next Page
           </b-button>
         </b-button-group>
@@ -151,12 +151,12 @@ export default {
       searchResultsLoading: false,
       supportedRegions: [],
       selectedRegion: 'us-west-2',
-      search_offset: 0,
-      search_total_results: 0
+      searchOffset: 0,
+      searchTotalResults: 0
     }
   },
   computed: {
-    search_result_pages() {
+    searchResultPages() {
       // TODO implement pages
       return [];
     },
@@ -188,12 +188,12 @@ export default {
     async getRegionData() {
       this.supportedRegions = await apiService.getSupportedRegions();
     },
-    previous_page: async function() {
-      this.search_offset = this.search_offset - 5;
+    previousPage: async function() {
+      this.searchOffset = this.searchOffset - 5;
       await this.search();
     },
-    next_page: async function() {
-      this.search_offset = this.search_offset + 5;
+    nextPage: async function() {
+      this.searchOffset = this.searchOffset + 5;
       await this.search();
     },
     async search() {
@@ -205,10 +205,10 @@ export default {
 
         const result = await apiService.searchDatabase(
           query,
-          this.search_offset
+          this.searchOffset
         );
 
-        this.search_total_results = result.totalResults;
+        this.searchTotalResults = result.totalResults;
 
         // Confirm that the result is still relevant to the currently type data.
         // If not, bail out because we may just be a delayed request.
@@ -222,8 +222,8 @@ export default {
       }
     },
     performSearch: async function() {
-      this.search_total_results = 0;
-      this.search_offset = 0;
+      this.searchTotalResults = 0;
+      this.searchOffset = 0;
       await this.search();
     },
     async downloadLayerZip(layerArn) {

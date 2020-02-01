@@ -64,12 +64,14 @@ export async function downloadLayer(layerArn) {
   window.location = `${API_SERVER}/api/v1/layers/download/${layerArn}`;
 }
 
-export async function searchDatabase(query) {
+export async function searchDatabase(query, offset) {
   const response = await makeAPIRequest(
     'POST',
     '/api/v1/layers/search',
     {
-      'query': query
+			'query': query,
+			'limit': 5,
+			'offset': offset
     }
   );
 
@@ -81,7 +83,10 @@ export async function searchDatabase(query) {
     throw new Error('Search failure');
   }
 
-  return response.search_results.map(convertLayerToLocal);
+  return {
+    results: response.search_results.map(convertLayerToLocal),
+    totalResults: response.total_results
+  };
 }
 
 export async function getSupportedRegions() {

@@ -1,0 +1,24 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "lambda-layers-ssr-server",
+      "memory": 7168,
+      "image": "134071937287.dkr.ecr.us-west-2.amazonaws.com/lambda-layers-database",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 8000,
+          "containerPort": 8000
+        }
+      ],
+      "logConfiguration": {
+      	"logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "EB-Lambda-Layers-Database-Container-Output",
+          "awslogs-region": "us-west-2"
+        }
+      }
+    }
+  ]
+}

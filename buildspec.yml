@@ -17,12 +17,18 @@ phases:
       - echo Building the SSR Docker image...
       - docker build -t $REPOSITORY_URI:latest --target BuildProduction ./front-end
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - echo Building the Back-end API Docker image...
+      - docker build -t $BACK_END_REPOSITORY_URI:latest ./back-end
+      - docker tag $BACK_END_REPOSITORY_URI:latest $BACK_END_REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker API server images...
+      - echo Pushing the Docker SSR images...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Pushing the Docker API server images...
+      - docker push $BACK_END_REPOSITORY_URI:latest
+      - docker push $BACK_END_REPOSITORY_URI:$IMAGE_TAG
 artifacts:
   base-directory: elasticbeanstalk-config/
   files: "**/*"

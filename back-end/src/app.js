@@ -368,6 +368,13 @@ router.get('/api/v1/layers/:layer_id', async (ctx, next) => {
 	}
 });
 
+router.get('/api/v1/health', async (ctx, next) => {
+	ctx.body = {
+		success: true,
+		msg: 'Health check OK!'
+	};
+});
+
 (async () => {
 	await database.database_init();
 	console.log(`[STATUS] Lambda layer database API has started on 0.0.0.0:${SERVER_PORT}...`);

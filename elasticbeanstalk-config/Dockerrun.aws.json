@@ -19,6 +19,25 @@
           "awslogs-region": "us-west-2"
         }
       }
+    },
+    {
+      "name": "lambda-layers-api-server",
+      "memory": 768,
+      "image": "134071937287.dkr.ecr.us-west-2.amazonaws.com/lambda-layers-database-back-end",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 7777,
+          "containerPort": 7777
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "EB-Lambda-Layers-Database-API-Container-Output",
+          "awslogs-region": "us-west-2"
+        }
+      }
     }
   ]
 }

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter);
 
+import Health from '../components/Health.vue';
 import Main from '../components/Main.vue';
 import Layout from '../components/Layout.vue';
 import SubmitLambdaLayer from '../components/SubmitLambdaLayer.vue';
@@ -41,6 +42,10 @@ export function createRouter() {
             component: ViewLambdaLayer
           }
         ]
+      },
+      {
+        path: '/health',
+        component: Health
       }
     ];
 

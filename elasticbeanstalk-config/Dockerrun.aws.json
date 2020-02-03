@@ -12,6 +12,9 @@
           "containerPort": 8000
         }
       ],
+      "links": [
+        "lambda-layers-api-server"
+      ],
       "logConfiguration": {
       	"logDriver": "awslogs",
         "options": {

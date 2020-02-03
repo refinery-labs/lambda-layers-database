@@ -1,4 +1,4 @@
-// eslint-disable no-console
+/* eslint-disable no-console */
 import fetch from 'node-fetch';
 // Required for fetch to work on the server...
 global.Headers = fetch.Headers;

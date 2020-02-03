@@ -84,7 +84,7 @@ export async function searchDatabase(query, offset) {
   }
 
   return {
-    results: response.search_results.map(convertLayerToLocal),
+    searchResults: response.search_results.map(convertLayerToLocal),
     totalResults: response.total_results
   };
 }

@@ -18,22 +18,35 @@ export async function makeAPIRequest(method, endpoint, body) {
 
   const apiServer = getApiServerUrl();
 
-  if (noBodyMethods.includes( method.toUpperCase() )) {
-    const response = await fetch(`${apiServer}${endpoint}`, {
-      method: method
-    });
-    return response.json();
+  const uri = `${apiServer}${endpoint}`;
+
+  if (typeof window === 'undefined') {
+    console.log(`[SSR Request]: ${uri}`);
   }
 
-  const response = await fetch(`${apiServer}${endpoint}`, {
-    method: method,
-    headers: new Headers({
-      'content-type': 'application/json'
-    }),
-    body: JSON.stringify(body)
-  });
+  try {
+    if (noBodyMethods.includes(method.toUpperCase())) {
+      const response = await fetch(uri, {
+        method: method
+      });
+      return response.json();
+    }
 
-  return response.json();
+    const response = await fetch(uri, {
+      method: method,
+      headers: new Headers({
+        'content-type': 'application/json'
+      }),
+      body: JSON.stringify(body)
+    });
+
+    return response.json();
+  } catch (e) {
+    if (typeof window === 'undefined') {
+      console.error(`[SSR Request Error]: ${e.message}\n${e.toString()}`);
+    }
+    throw e;
+  }
 }
 
 export async function isValidAndExistingLayer(layerArn) {

@@ -81,7 +81,7 @@ export async function submitLayerSubmission(submission_data) {
 }
 
 export async function downloadLayer(layerArn) {
-  window.location = `${API_SERVER}/api/v1/layers/download/${layerArn}`;
+  window.location = `${getApiServerUrl()}/api/v1/layers/download/${layerArn}`;
 }
 
 export async function searchDatabase(query, offset) {

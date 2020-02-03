@@ -70,7 +70,13 @@ export async function submitLayerSubmission(submission_data) {
   return makeAPIRequest(
     'POST',
     '/api/v1/layers/submit',
-    submission_data
+    {
+      description: submission_data.description,
+      layer_arn: submission_data.layerArn,
+      license: submission_data.license,
+      source_link: submission_data.sourceLink,
+      submitter_name: submission_data.submitterName
+    }
   );
 }
 
@@ -83,9 +89,9 @@ export async function searchDatabase(query, offset) {
     'POST',
     '/api/v1/layers/search',
     {
-			'query': query,
-			'limit': 5,
-			'offset': offset
+			query: query,
+			limit: 5,
+			offset: offset
     }
   );
 

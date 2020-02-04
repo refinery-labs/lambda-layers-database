@@ -6,7 +6,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item class="navbar-link-color" to="/layer-downloader">
-            <i class="fas fa-download"></i>Lambda Layer Downloader
+            <i class="fas fa-download"></i> Lambda Layer Downloader
           </b-nav-item>
           <b-nav-item class="navbar-link-color" to="/submit">
             <i class="fas fa-plus"></i> Submit Layer to Database

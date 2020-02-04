@@ -133,7 +133,9 @@ export default {
     }
   },
   async mounted() {
-    this.getLayerContents();
+    if (!this.internalLayer) {
+      this.getLayerContents();
+    }
   },
   async serverPrefetch() {
     await this.getLayerContents();

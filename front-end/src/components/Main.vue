@@ -188,11 +188,11 @@ export default {
     async getRegionData() {
       this.supportedRegions = await apiService.getSupportedRegions();
     },
-    previousPage: async function() {
+    async previousPage() {
       this.searchOffset = this.searchOffset - 5;
       await this.search();
     },
-    nextPage: async function() {
+    async nextPage() {
       this.searchOffset = this.searchOffset + 5;
       await this.search();
     },
@@ -221,7 +221,7 @@ export default {
         this.searchResultsLoading = false;
       }
     },
-    performSearch: async function() {
+    async performSearch() {
       this.searchTotalResults = 0;
       this.searchOffset = 0;
       await this.search();
@@ -232,9 +232,15 @@ export default {
       );
     },
   },
+  // TODO: Pass state from server to client so that we don't have to make requests again
   mounted() {
-    this.performSearch();
-    this.getRegionData();
+    if (!this.searchTotalResults) {
+      this.performSearch();
+    }
+
+    if (!this.supportedRegions) {
+      this.getRegionData();
+    }
   },
   async serverPrefetch() {
     await this.performSearch();

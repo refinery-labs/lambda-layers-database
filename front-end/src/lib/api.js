@@ -3,16 +3,7 @@ import fetch from 'node-fetch';
 // Required for fetch to work on the server...
 global.Headers = fetch.Headers;
 
-import {convertLayerToLocal} from './utils';
-
-function getApiServerUrl() {
-  // Check if we're on the server
-  if (typeof window === 'undefined') {
-    return process.env.VUE_APP_SSR_API_HOST;
-  }
-
-  return process.env.WEB_ORIGIN;
-}
+import {convertLayerToLocal, getApiServerUrl} from './utils';
 
 export async function makeAPIRequest(method, endpoint, body) {
   const noBodyMethods = [ 'GET', 'HEAD', 'OPTIONS' ];
@@ -78,10 +69,6 @@ export async function submitLayerSubmission(submission_data) {
       submitter_name: submission_data.submitterName
     }
   );
-}
-
-export async function downloadLayer(layerArn) {
-  window.location = `${getApiServerUrl()}/api/v1/layers/download/${layerArn}`;
 }
 
 export async function searchDatabase(query, offset) {

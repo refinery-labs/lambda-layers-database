@@ -138,22 +138,19 @@
 </template>
 
 <script>
-import * as apiService from '../lib/api.js';
 import * as utils from '../lib/utils.js';
+import {downloadLayer} from '../lib/utils';
 
 export default {
   name: 'Main',
   props: {},
-  data: function () {
+  data() {
     return {
       query: '',
-      internalSearchResults: [],
       searchResultsLoading: false,
-      supportedRegions: [],
       selectedRegion: 'us-west-2',
-      searchOffset: 0,
-      searchTotalResults: 0
-    }
+      searchOffset: 0
+    };
   },
   computed: {
     searchResultPages() {
@@ -165,28 +162,35 @@ export default {
         return {
           value: region,
           text: region
-        }
+        };
       })
     },
+    supportedRegions() {
+      return this.$store.state.supportedRegions;
+    },
     searchResults() {
-      return this.internalSearchResults.map(searchResult => {
+      if (!this.$store.state.searchResults) {
+        return [];
+      }
+
+      return this.$store.state.searchResults.map(searchResult => {
         return {
           ...searchResult,
           layerArn: utils.replaceLayerRegion(
             searchResult.layerArn,
             this.selectedRegion
           )
-        }
+        };
       });
+    },
+    searchTotalResults() {
+      return this.$store.state.totalResults;
     }
   },
   methods: {
     copyLayerArn(layerArn) {
       this.$copyText(layerArn);
       this.$toastr && this.$toastr.s('Lambda layer ARN copied to clipboard!');
-    },
-    async getRegionData() {
-      this.supportedRegions = await apiService.getSupportedRegions();
     },
     async previousPage() {
       this.searchOffset = this.searchOffset - 5;
@@ -198,23 +202,12 @@ export default {
     },
     async search() {
       this.searchResultsLoading = true;
-      this.internalSearchResults = [];
 
       try {
-        const query = this.query;
-
-        const result = await apiService.searchDatabase(
-          query,
-          this.searchOffset
-        );
-
-        this.searchTotalResults = result.totalResults;
-
-        // Confirm that the result is still relevant to the currently type data.
-        // If not, bail out because we may just be a delayed request.
-        if (this.query === query) {
-          this.internalSearchResults = result.searchResults;
-        }
+        await this.$store.dispatch('searchDatabaseWithQuery', {
+          query: this.query,
+          offset: this.searchOffset
+        });
       } catch (e) {
         this.$toastr && this.$toastr.e('An error occurred while performing this search.');
       } finally {
@@ -222,24 +215,26 @@ export default {
       }
     },
     async performSearch() {
-      this.searchTotalResults = 0;
-      this.searchOffset = 0;
+      await this.$store.dispatch('resetSearchResults');
       await this.search();
     },
     async downloadLayerZip(layerArn) {
-      await apiService.downloadLayer(
+      await downloadLayer(
         layerArn
       );
     },
+    getRegionData() {
+      return this.$store.dispatch('getRegionData');
+    }
   },
   // TODO: Pass state from server to client so that we don't have to make requests again
-  mounted() {
+  async beforeMount() {
     if (!this.searchTotalResults) {
-      this.performSearch();
+      await this.performSearch();
     }
 
     if (!this.supportedRegions) {
-      this.getRegionData();
+      await this.getRegionData();
     }
   },
   async serverPrefetch() {

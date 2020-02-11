@@ -20,6 +20,7 @@ Vue.use(VueRouter);
 import './styles/bootstrap.scss';
 
 import {createRouter} from './router';
+import store from './store'
 
 export async function createApp(context = {}) {
   // Read arguments
@@ -36,12 +37,14 @@ export async function createApp(context = {}) {
 
   const app = new Vue({
     router,
+    store,
     render: h => h(App)
   });
 
   const result = {
     app,
     router,
+    store
   };
 
   await afterApp(result);

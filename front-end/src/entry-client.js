@@ -15,12 +15,18 @@ createApp({
   afterApp ({
     app,
     router,
+    store
   }) {
 
     router.onReady(() => {
+
+      if (window.__LAYER_STATE__) {
+        // We initialize the store state with the data injected from the server
+        store.replaceState(window.__LAYER_STATE__)
+      }
 
       // Vue.use(VueToastr);
       app.$mount('#app')
     })
   }
-})
+});

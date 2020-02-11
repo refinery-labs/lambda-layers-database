@@ -24,13 +24,15 @@
     "vue-clipboard2": "^0.3.1",
     "vue-router": "^3.1.4",
     "vue-server-renderer": "^2.6.0",
-    "vue-toastr": "^2.1.2"
+    "vue-toastr": "^2.1.2",
+    "vuex": "^3.1.2"
   },
   "devDependencies": {
     "@akryum/vue-cli-plugin-ssr": "^0.6.0",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-router": "^4.1.2",
+    "@vue/cli-plugin-vuex": "^4.1.2",
     "@vue/cli-service": "^4.1.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",

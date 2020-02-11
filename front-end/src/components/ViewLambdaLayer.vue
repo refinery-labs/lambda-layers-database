@@ -73,6 +73,7 @@
 <script>
 import * as apiService from '../lib/api.js';
 import * as utils from '../lib/utils.js';
+import {downloadLayer} from '../lib/utils';
 
 /* eslint-disable no-alert, no-console */
 export default {
@@ -80,7 +81,7 @@ export default {
   props: {},
   data() {
     return {
-      loading: true,
+      loading: false,
       error: null,
       internalLayer: {
         layerArn: 'arn:aws:lambda:us-west-2:xxxxxxxxxx:layer:Please_Wait:1',
@@ -88,7 +89,6 @@ export default {
         license: 'Please wait...',
         submitterName: 'Please wait...'
       },
-      supportedRegions: ['us-west-2'],
       selectedRegion: 'us-west-2'
     }
   },
@@ -96,19 +96,36 @@ export default {
     selectFormattedSupportedRegions() {
       return this.supportedRegions.map(region => {
         return {
-          'value': region,
-          'text': region
+          value: region,
+          text: region
         }
       })
     },
+    currentlySelectedLayer() {
+      return this.$route.params.layerId;
+    },
     layer() {
+      const internalLayer = this.$store.state.layerInfo[this.currentlySelectedLayer];
+
+      if (!internalLayer) {
+        return null;
+      }
+
       return {
-        ...this.internalLayer,
+        ...internalLayer,
         layerArn: utils.replaceLayerRegion(
-          this.internalLayer.layerArn,
+          internalLayer.layerArn,
           this.selectedRegion
         )
       }
+    },
+    supportedRegions() {
+      const regions = this.$store.state.supportedRegions;
+      if (!regions || regions.length === 0) {
+        return ['us-west-2'];
+      }
+
+      return regions;
     }
   },
   methods: {
@@ -117,28 +134,39 @@ export default {
       this.$toastr && this.$toastr.s('Lambda layer ARN copied to clipboard!');
     },
     async downloadLayerZip(layerArn) {
-      await apiService.downloadLayer(
+      await downloadLayer(
         layerArn
       );
     },
     async getLayerContents() {
-      const layerId = this.$route.params.layerId;
+      const layerId = this.currentlySelectedLayer;
       try {
-        this.internalLayer = await apiService.getLambdaLayerInfo(layerId);
+        await this.$store.dispatch('getLayerInfo', layerId);
       } catch (e) {
         this.error = 'Unable to load layer';
       } finally {
         this.loading = false;
       }
+    },
+    getRegionData() {
+      return this.$store.dispatch('getRegionData');
     }
   },
-  async mounted() {
-    if (!this.internalLayer) {
-      this.getLayerContents();
+  async beforeMount() {
+    if (!this.layer) {
+      this.loading = true;
+      await this.getLayerContents();
+      this.loading = false;
+    }
+
+    const regions = this.$store.state.supportedRegions;
+    if (!regions || regions.length === 0) {
+      await this.getRegionData();
     }
   },
   async serverPrefetch() {
     await this.getLayerContents();
+    await this.getRegionData();
   }
 }
 </script>

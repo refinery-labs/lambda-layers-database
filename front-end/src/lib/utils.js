@@ -33,3 +33,17 @@ export function replaceLayerRegion(layerArn, region) {
 
   return layer_parts.join(':');
 }
+
+export function getApiServerUrl() {
+  // Check if we're on the server
+  if (typeof window === 'undefined') {
+    return process.env.VUE_APP_SSR_API_HOST;
+  }
+
+  return process.env.WEB_ORIGIN;
+}
+
+export async function downloadLayer(layerArn) {
+  window.location = `${getApiServerUrl()}/api/v1/layers/download/${layerArn}`;
+}
+

@@ -2,19 +2,19 @@
   <div class="row justify-content-center">
     <div class="col-lg-9">
       <div class="lambda-layer-downloader">
-        <h3 class="search-title"><i class="fas fa-download"></i> Download Layer <code>.zip</code> by ARN</h3>
+        <h3 class="search-title">
+          <i class="fas fa-download"></i> Download Layer <code>.zip</code> by ARN
+        </h3>
         <br>
-        <p>
-          <b-form-group description="The ARN of the Lambda layer you'd like to download.">
-            <b-form-input @change="validateLayer" v-model="layerArn" :state="validLayer" class="search-box" size="lg" type="text" placeholder="arn:aws:lambda:us-west-2:000000000000:layer:example-layer:1" autofocus></b-form-input>
-            <b-form-invalid-feedback>
-              This is either not a valid Lambda ARN, or attempting to download the layer failed (likely due to it not being mountable from any AWS account).
-            </b-form-invalid-feedback>
-          </b-form-group>
-          <b-button variant="primary" size="lg" v-on:click="downloadSuppliedLayer">
-            <i class="fas fa-download"></i> Download Lambda Layer
-          </b-button>
-        </p>
+        <b-form-group description="The ARN of the Lambda layer you'd like to download.">
+          <b-form-input @change="validateLayer" v-model="layerArn" :state="validLayer" class="search-box" size="lg" type="text" placeholder="arn:aws:lambda:us-west-2:000000000000:layer:example-layer:1" autofocus></b-form-input>
+          <b-form-invalid-feedback>
+            This is either not a valid Lambda ARN, or attempting to download the layer failed (likely due to it not being mountable from any AWS account).
+          </b-form-invalid-feedback>
+        </b-form-group>
+        <b-button variant="primary" size="lg" v-on:click="downloadSuppliedLayer">
+          <i class="fas fa-download"></i> Download Lambda Layer
+        </b-button>
       </div>
     </div>
   </div>
@@ -22,6 +22,7 @@
 
 <script>
 import * as apiService from '../lib/api.js';
+import {downloadLayer} from '../lib/utils';
 
 export default {
   name: 'LambdaLayerDownloader',
@@ -53,7 +54,7 @@ export default {
         return
       }
 
-      await apiService.downloadLayer(
+      await downloadLayer(
         this.layerArn
       );
 

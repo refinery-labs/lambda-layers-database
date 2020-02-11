@@ -12,13 +12,14 @@ export default context => {
     const {
       app,
       router,
+      store
     } = await createApp();
 
     router.push(prepareUrlForRouting(context.url));
 
     router.onReady(() => {
       context.rendered = () => {
-
+        context.layerState = store.state;
       };
       resolve(app)
     }, reject)

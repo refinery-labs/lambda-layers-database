@@ -4,7 +4,7 @@
     <div class="col-lg-8">
       <div class="successful-submission text-justify">
         <b-alert variant="success" show>
-          <h1><i class="fas fa-check-circle"></i> Submission received successfully.</h1>
+          <h3><i class="fas fa-check-circle"></i> Submission received successfully.</h3>
           <p>
             Thanks for your submission, we will review it shortly.
           </p>

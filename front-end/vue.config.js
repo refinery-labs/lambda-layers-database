@@ -1,7 +1,9 @@
-const webpack = require('webpack')
+const webpack = require('webpack');
+
+const publicPath = process.env.PUBLIC_PATH || '/';
 	
 module.exports = {
-  publicPath: '/',
+  publicPath: publicPath,
   configureWebpack: {
     plugins: [
       new webpack.DefinePlugin({

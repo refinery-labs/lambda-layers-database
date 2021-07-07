@@ -26,6 +26,7 @@ services:
     volumes:
       # Mounting these as volumes allows live reloading
       - /REPLACE_WITH_PATH_OF_REPO_ON_YOUR_SYSTEM/back-end/:/work/
+
   front-end:
     build: ./front-end
     environment:
@@ -35,6 +36,25 @@ services:
     volumes:
       # Mounting these as volumes allows live reloading
       - /REPLACE_WITH_PATH_OF_REPO_ON_YOUR_SYSTEM/front-end/:/work/
+      - /work/front-end/node_modules # This will copy in node_modules from the built image, because magic
+      # More info on above magic here: https://stackoverflow.com/questions/30043872/docker-compose-node-modules-not-present-in-a-volume-after-npm-install-succeeds
+
+  # TODO: Figure out how to DRY up this declaration with the other front-end one.
+  front-end-ssr:
+    build: ./front-end
+    command: "ssr:serve"
+    depends_on:
+      - back-end
+    environment:
+      WEB_ORIGIN: "http://localhost:8008"
+    ports:
+      - "8011:8000"
+    volumes:
+      # Mounting these as volumes allows live reloading
+      - /home/docker/lambda-layers-database/front-end/:/work/front-end
+      - /work/front-end/node_modules # This will copy in node_modules from the built image, because magic
+      # More info on above magic here: https://stackoverflow.com/questions/30043872/docker-compose-node-modules-not-present-in-a-volume-after-npm-install-succeeds
+
   postgresdb:
     image: postgres
     environment:

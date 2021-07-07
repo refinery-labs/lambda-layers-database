@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:12 as BaseBuild
 
 RUN mkdir /work/
 RUN mkdir /work/front-end
@@ -14,7 +14,17 @@ RUN npm install
 
 COPY . /work/front-end
 
+FROM BaseBuild as RunDevelopment
+
 # The "serve" mode will hot-reload components and watch for changes automatically.
 ENTRYPOINT ["npm", "run"]
 CMD ["serve"]
 
+FROM BaseBuild as BuildProduction
+
+# Runs the build for the assets
+RUN npm run ssr:build
+
+# Starts the server
+ENTRYPOINT ["npm", "run"]
+CMD ["ssr:start"]

@@ -1,31 +1,31 @@
 <template>
-    <div class="main">
-      <b-alert variant="success" show>
-        <h1><font-awesome-icon icon="check-circle" /> Submission received successfully.</h1>
-        <p>
-          Thanks for your submission, we will review it shortly.
-        </p>
-      </b-alert>
-      <hr />
-      <b-button class="w-100" to="/" variant="primary"><font-awesome-icon icon="home" /> Back to Homepage</b-button>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="successful-submission text-justify">
+        <b-alert variant="success" show>
+          <h3><i class="fas fa-check-circle"></i> Submission received successfully.</h3>
+          <p>
+            Thanks for your submission, we will review it shortly.
+          </p>
+        </b-alert>
+        <hr />
+        <b-button class="w-100" to="/" variant="primary">
+          <i class="fas fa-home"></i> Back to Homepage
+        </b-button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 
 /* eslint-disable no-alert, no-console */
 export default {
-    name: 'SuccessfulSubmission',
-    props: {}
+  name: 'SuccessfulSubmission',
+  props: {}
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.main {
-    max-width: 600px;
-    margin: 0 auto;
-    padding-left: 10px;
-    padding-right: 10px;
-    text-align: center;
-}
 </style>

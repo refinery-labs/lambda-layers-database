@@ -2,50 +2,52 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
-import {library} from '@fortawesome/fontawesome-svg-core'
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import {faFontAwesome} from '@fortawesome/free-brands-svg-icons'
-import {fab} from '@fortawesome/free-brands-svg-icons';
 import VueClipboard from 'vue-clipboard2'
 
-import VueToastr from "vue-toastr";
+import '@fortawesome/fontawesome-free/css/brands.css';
+import '@fortawesome/fontawesome-free/css/regular.css';
+import '@fortawesome/fontawesome-free/css/solid.css';
+import '@fortawesome/fontawesome-free/css/fontawesome.css';
 
-import {faEdit} from '@fortawesome/fontawesome-free-solid'
+Vue.config.productionTip = false;
 
-library.add(fab, faEdit, faFontAwesome);
-
-Vue.component('font-awesome-icon', FontAwesomeIcon)
-
-Vue.config.productionTip = false
-
-Vue.use(BootstrapVue)
-Vue.use(VueClipboard)
-Vue.use(IconsPlugin)
-Vue.use(VueRouter)
-Vue.use(VueToastr)
+Vue.use(BootstrapVue);
+Vue.use(VueClipboard);
+Vue.use(IconsPlugin);
+Vue.use(VueRouter);
 
 // app.js
 import './styles/bootstrap.scss';
 
-import Main from './components/Main.vue';
-import SubmitLambdaLayer from './components/SubmitLambdaLayer.vue';
-import SuccessfulSubmission from './components/SuccessfulSubmission.vue';
-import LambdaLayerDownloader from './components/LambdaLayerDownloader.vue';
-import ViewLambdaLayer from './components/ViewLambdaLayer.vue';
+import {createRouter} from './router';
+import store from './store'
 
-const routes = [
-    {path: '/', component: Main},
-    {path: '/submit', component: SubmitLambdaLayer},
-    {path: '/submission-successful', component: SuccessfulSubmission},
-    {path: '/layer-downloader', component: LambdaLayerDownloader},
-    {path: '/layer/:layer_id', component: ViewLambdaLayer}
-]
+export async function createApp(context = {}) {
+  // Read arguments
+  const {
+    beforeApp = () => {},
+    afterApp = () => {}
+  } = context;
 
-const router = new VueRouter({
-    routes // short for `routes: routes`
-})
+  const router = createRouter();
 
-new Vue({
+  await beforeApp({
     router,
-    render: h => h(App),
-}).$mount('#app')
+  });
+
+  const app = new Vue({
+    router,
+    store,
+    render: h => h(App)
+  });
+
+  const result = {
+    app,
+    router,
+    store
+  };
+
+  await afterApp(result);
+
+  return result
+}

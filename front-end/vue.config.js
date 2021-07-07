@@ -1,7 +1,9 @@
-const webpack = require('webpack')
+const webpack = require('webpack');
+
+const publicPath = process.env.PUBLIC_PATH || '/';
 	
 module.exports = {
-  publicPath: './',
+  publicPath: publicPath,
   configureWebpack: {
     plugins: [
       new webpack.DefinePlugin({
@@ -30,6 +32,10 @@ module.exports = {
       acl: 'public-read',
       enableCloudfront: false,
       pluginVersion: '3.0.0'
+    },
+    ssr: {
+      host: '0.0.0.0',
+      copyUrlOnStart: false
     }
   }
-}
+};
